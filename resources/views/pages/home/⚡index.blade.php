@@ -16,22 +16,20 @@ new class extends Component {
 
     public function mount()
     {
-        $this->counter = Counter::firstOrCreate(['id' => 1], ['values' => 0]);
+        $this->counter = Counter::firstOrCreate(['id' => 1], ['value' => 0]);
     }
 
     public function increment()
     {
-        $value = $this->counter->value;
-        $value++;
         $this->counter->update([
-            'value' => $value,
+            'value' => $this->counter->value + 1,
         ]);
     }
 
     public function decrement()
     {
         $this->counter->decrement('value');
-        $this->counter->refresh();
+        // $this->counter->refresh();
     }
 
     public function ulang()
@@ -46,7 +44,7 @@ new class extends Component {
     {{-- If you do not have a consistent goal in life, you can not live it in a consistent way. - Marcus Aurelius --}}
     <h1>{{ $counter->value }}</h1>
     <form wire:submit.prevent="increment">
-        <button type:submit>Increment</button>
+        <button type="submit">Increment</button>
     </form>
     <button wire:click="decrement" type="button">Decrement</button>
     <button wire:click="ulang" type="button">RESET!</button>
