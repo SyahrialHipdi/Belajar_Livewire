@@ -62,12 +62,23 @@ new class extends Component {
 
 <div>
     {{-- If you do not have a consistent goal in life, you can not live it in a consistent way. - Marcus Aurelius --}}
-    <h1>{{ $counter->value }}</h1>
-    <button wire:click="increment" type="button">INC</button>
-    <button wire:click="decrement" type="button">Decrement</button>
-    <button wire:click="ulang" type="button">RESET!</button>
+    <div x-data="{ val: @entangle('value') }" + @counter-updated.window="val = $event.detail">
 
+        <h1 x-text="val"></h1>
+
+        <button wire:click="increment" type="button">INC</button>
+        <button wire:click="decrement" type="button">Decrement</button>
+        <button wire:click="ulang" type="button">RESET!</button>
+    </div>
 
 </div>
 
-<script></script>
+<script>
+    Echo.channel('counter')
+        .listen('.CounterUpdated', (e) => {
+            console.log(e.value);
+            window.dispatchEvent(new CustomEvent('counter-updated', {
+                detail: e.value
+            }));
+        });
+</script>
