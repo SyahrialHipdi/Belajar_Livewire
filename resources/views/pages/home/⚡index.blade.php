@@ -2,6 +2,7 @@
 
 use Livewire\Component;
 use App\Models\Counter;
+use Livewire\Attributes\On;
 
 new class extends Component {
     //
@@ -26,10 +27,19 @@ new class extends Component {
         ]);
     }
 
+    #[On('kurang')]
+    public function apdat()
+    {
+        $this->counter->refresh();
+        Log::info('Event diterima');
+        // dd('Event tertangkap!');
+    }
+
     public function decrement()
     {
         $this->counter->decrement('value');
         // $this->counter->refresh();
+        $this->dispatch('kurang');
     }
 
     public function ulang()
